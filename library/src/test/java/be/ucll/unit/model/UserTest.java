@@ -1,10 +1,10 @@
-package be.ucll.unit.model;
+package be.ucll.model;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import be.ucll.model.DomainException;
+import be.ucll.unit.model.DomainException;
 import be.ucll.model.User;
 
 public class UserTest {
@@ -29,10 +29,12 @@ public class UserTest {
     @Test
     void createUser_MissingEmail_ThrowsException() {
         assertThrows(DomainException.class, () -> new User("John Doe", 25, "", ""));
+        assertThrows(DomainException.class, () -> new User("John Doe", "invalid-email", 25, "password"));
     }
 
     @Test
     void createUser_MissingPassword_ThrowsException() {
         assertThrows(DomainException.class, () -> new User("John Doe", 25, "john@example.com", ""));
+        assertThrows(DomainException.class, () -> new User("John Doe", "john.doe@ucll.be", 150, "password"));
     }
 }

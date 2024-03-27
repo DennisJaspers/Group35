@@ -28,7 +28,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        if (password == null || password.length() < 8) {
+        if (password == null || password.length() < 8 || password.trim().isEmpty())  {
             throw new DomainException("Password must be at least 8 characters long.");
         }
         this.password = password;

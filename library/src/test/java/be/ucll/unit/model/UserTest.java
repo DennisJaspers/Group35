@@ -1,40 +1,45 @@
-package be.ucll.model;
+package be.ucll.model.unit.UserTest;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import be.ucll.unit.model.DomainException;
 import be.ucll.model.User;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserTest {
 
     @Test
-    public void givenValidValues_whenCreatingUser_thenUserIsCreatedWithThoseValues() {
-        User user = new User("John Doe", "john.doe@ucll.be", 56, "john1234");
-
+    public void testValidUser() {
+        User user = new User("John Doe", "john@example.com", 25, "password123");
         assertEquals("John Doe", user.getName());
-        assertEquals(56, user.getAge());
-        assertEquals("john.doe@ucll.be", user.getEmail());
-        assertEquals("john1234", user.getPassword());
-    }
-
-
-    @Test
-    void createUser_InvalidName_ThrowsException() {
-        assertThrows(DomainException.class, () -> new User(null, 25, "", ""));
-        assertThrows(DomainException.class, () -> new User("", 25, "", ""));
+        assertEquals("john@example.com", user.getEmail());
+        assertEquals(25, user.getAge());
+        assertEquals("password123", user.getPassword());
     }
 
     @Test
-    void createUser_MissingEmail_ThrowsException() {
-        assertThrows(DomainException.class, () -> new User("John Doe", 25, "", ""));
-        assertThrows(DomainException.class, () -> new User("John Doe", "invalid-email", 25, "password"));
+    public void testInvalidName() {
+        assertThrows(DomainException.class, () -> new User(null, "john@example.com", 25, "password123"));
+        assertThrows(DomainException.class, () -> new User("", "john@example.com", 25, "password123"));
+        assertThrows(DomainException.class, () -> new User(" ", "john@example.com", 25, "password123"));
     }
 
     @Test
-    void createUser_MissingPassword_ThrowsException() {
-        assertThrows(DomainException.class, () -> new User("John Doe", 25, "john@example.com", ""));
-        assertThrows(DomainException.class, () -> new User("John Doe", "john.doe@ucll.be", 150, "password"));
+    public void testInvalidEmail() {
+        assertThrows(DomainException.class, () -> new User("John Doe", null, 25, "password123"));
+        assertThrows(DomainException.class, () -> new User("John Doe", "", 25, "password123"));
+        assertThrows(DomainException.class, () -> new User("John Doe", "invalid-email", 25, "password123"));
+    }
+
+    @Test
+    public void testInvalidAge() {
+        assertThrows(DomainException.class, () -> new User("John Doe", "john@example.com", -1, "password123"));
+        assertThrows(DomainException.class, () -> new User("John Doe", "john@example.com", 0, "password123"));
+        assertThrows(DomainException.class, () -> new User("John Doe", "john@example.com", 101, "password123"));
+    }
+
+    @Test
+    public void testInvalidPassword() {
+        assertThrows(DomainException.class, () -> new User("John Doe", "john@example.com", 25, null));
+        assertThrows(DomainException.class, () -> new User("John Doe", "john@example.com", 25, ""));
+        assertThrows(DomainException.class, () -> new User("John Doe", "john@example.com", 25, "short"));
     }
 }
